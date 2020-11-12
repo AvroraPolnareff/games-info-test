@@ -19,8 +19,12 @@ const GameCard = ({name,thumbnail, rating, releaseDate, platforms}) => {
 const StyledGameCard = styled.div`
   
 `
-const Thumbnail = styled.div`
-  
+const Thumbnail = styled.div.attrs(props => ({style: {backgroundImage: props.src}}))`
+  background-position: 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 100%;
 `
 const Platforms = styled.div`
   
@@ -39,4 +43,4 @@ const Release = styled.div`
 `
 
 
-export default Home
+export default GameCard

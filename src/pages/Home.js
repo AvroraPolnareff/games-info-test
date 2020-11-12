@@ -26,6 +26,10 @@ const StyledHome = styled.div`
 const GamesList = styled.div`
   
 `
+const SortWrapper = styled.div`
+  
+`
 
+const Select = styled.select``
 
 export default Home
