@@ -8,15 +8,15 @@ import Header from "../components/Header";
 
 const App = () => {
   return (
-    <StyledApp>
       <HashRouter>
         <Header/>
         <Switch>
-          <Route path="/" exact component={<Home/>}/>
+          <Route path="/" exact>
+            <Home/>
+          </Route>
           <Route path={"/game/:gameId"} component={<Game/>}/>
         </Switch>
       </HashRouter>
-    </StyledApp>
   )
 }
 
