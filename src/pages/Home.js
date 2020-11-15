@@ -12,6 +12,7 @@ import {
 } from "../store/gamesListSlice";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {useQuery} from "../helpers/hooks";
+import {Spinner} from "../components/Spinner";
 
 const Home = ({}) => {
   const games = useSelector(selectGames)
@@ -19,16 +20,11 @@ const Home = ({}) => {
   const sort = useSelector(selectSort)
   const platforms = useSelector(selectPlatforms)
 
-  const query = useQuery()
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(fetchGamesList({
-        search: query.get('search'),
-        platforms: query.get('platforms'),
-        sort: query.get('sort'),
-      }))
+      dispatch(fetchGamesList({}))
     }
   }, [status, dispatch])
 
@@ -37,9 +33,7 @@ const Home = ({}) => {
   }
 
   const handleSort = (e) => {
-    console.log(e.target.value)
     dispatch(changeSort(e.target.value))
-    console.log(sort)
   }
 
   const handlePlatforms = (e) => {
@@ -49,68 +43,85 @@ const Home = ({}) => {
 
   return (
     <StyledHome>
-      <SortWrapper>
-        <span>Sort By: </span>
-        <Select name="sort" value={sort} onChange={handleSort}>
-          <option value="">None</option>
-          <option value={"rating"}>Rating asc.</option>
-          <option value={"-rating"}>Rating desc.</option>
-          <option value={"released"}>Release Date asc.</option>
-          <option value={"-released"}>Release Date desc.</option>
-        </Select>
-        <Select name="platforms" value={platforms} onChange={handlePlatforms}>
-          <option value="">All</option>
-          <option value="187">PlayStation 5</option>
-          <option value="18">PlayStation 4</option>
-          <option value="4">Xbox One</option>
-        </Select>
-      </SortWrapper>
+      <FiltersWrapper>
+        <label>Sort By:
+          <Select name="sort" value={sort} onChange={handleSort}>
+            <option value="">None</option>
+            <option value={"rating"}>Rating asc.</option>
+            <option value={"-rating"}>Rating desc.</option>
+            <option value={"released"}>Release Date asc.</option>
+            <option value={"-released"}>Release Date desc.</option>
+          </Select>
+        </label>
+
+        <label>Platforms:
+          <Select name="platforms" value={platforms} onChange={handlePlatforms}>
+            <option value="">All</option>
+            <option value="187">PlayStation 5</option>
+            <option value="18">PlayStation 4</option>
+            <option value="4">Xbox One</option>
+          </Select>
+        </label>
+      </FiltersWrapper>
       <GamesList
         dataLength={games.length}
         next={onLoadMore}
         hasMore={true}
         useWindow={true}
-        loader={<h4>Loading</h4>}
+        loader={<SpinnerWrapper><Spinner/></SpinnerWrapper>}
       >
-        {games.length && games.map(game => (
-            <GameCard
-              key={game.id}
-              title={game.title}
-              platforms={game.platforms}
-              rating={game.rating}
-              releaseDate={game.releaseDate}
-              thumbnail={game.thumbnail}
-              slug={game.slug}
-            />
+        {Boolean(games.length) && games.map(game => (
+          <GameCard
+            key={game.id}
+            title={game.title}
+            platforms={game.platforms}
+            rating={game.rating}
+            releaseDate={game.releaseDate}
+            thumbnail={game.thumbnail}
+            slug={game.slug}
+          />
         ))}
       </GamesList>
     </StyledHome>
   )
 }
 
-const StyledHome = styled.div`
+const StyledHome = styled.main`
   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `
 const GamesList = styled(InfiniteScroll)`
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  
+  justify-content: center;
+  margin: 0 auto;
 `
-const SortWrapper = styled.div`
-  
+const FiltersWrapper = styled.div`
+  display: flex;
 `
 
 const Select = styled.select`
   background-color: ${({theme}) => theme.colors.input.back};
   padding: 4px;
-
+  margin: 0 8px;
   color: ${({theme}) => theme.colors.input.text};
   border-radius: 4px;
   border: none;
   & > option {
     color: black;
   }
+`
+
+const SpinnerWrapper = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 48px;
 `
 
 export default Home

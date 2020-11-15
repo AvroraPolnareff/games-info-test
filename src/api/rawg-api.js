@@ -18,7 +18,7 @@ const axios = Axios.create({
  */
 export async function fetchGames(page, search, sort, platforms) {
   let params = {
-    page_size: 20,
+    page_size: 21,
     page: page
   }
   console.log(page, search, sort, platforms)
@@ -35,7 +35,7 @@ export async function fetchGames(page, search, sort, platforms) {
     title: game.name,
     thumbnail: game.background_image && cropImageUrl(game.background_image, 600, 400),
     rating: game.rating,
-    platforms: transformPlatforms(game.platforms),
+    platforms: game.platforms && transformPlatforms(game.platforms),
     releaseDate: game.released && transformDate(game.released)
   }))
 }

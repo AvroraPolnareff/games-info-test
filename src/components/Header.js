@@ -1,20 +1,28 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import searchIcon from '../assets/search.svg'
 import {up} from 'styled-breakpoints'
-import {useDispatch} from "react-redux";
-import {changeSearch} from "../store/gamesListSlice";
-import {useQuery} from "../helpers/hooks";
+import {useDispatch, useSelector} from "react-redux";
+import {changeSearch, selectSearch} from "../store/gamesListSlice";
+import {useHistory} from 'react-router-dom'
 
 const Header = ({}) => {
   const dispatch = useDispatch()
-  const query = useQuery()
-  const [value, setValue] = useState(query.get("search") ?? "")
+  const search = useSelector(selectSearch)
+  const history = useHistory()
 
+  const [value, setValue] = useState("")
+
+  useEffect(() => {
+    setValue(search)
+  }, [search])
   return (
     <StyledHeader>
       <Logo href="/">GAMES</Logo>
-      <form onSubmit={() => dispatch(changeSearch(value))}>
+      <form onSubmit={() => {
+        history.push('/')
+        dispatch(changeSearch(value))
+      }}>
         <Search
           value={value}
           onChange={(e) => setValue(e.target.value)}

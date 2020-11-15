@@ -6,6 +6,7 @@ const darkTheme = {
     input: {
       back: 'hsla(0,0%,100%,.16)',
       text: "hsla(0,0%,100%,.6)",
+      enabledBack: 'hsla(0,0%,100%,.30)',
     },
     secondary: {
       back: '#202020',

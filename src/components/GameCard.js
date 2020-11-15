@@ -1,22 +1,29 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
 import {up} from 'styled-breakpoints'
 import {Link} from "react-router-dom";
 import {InfoElement, InfoList} from "./InfoList";
 import {Badge} from "./Badge";
+import {useHistory} from "react-router-dom"
 
 const GameCard = ({title, thumbnail, rating, releaseDate, platforms, slug}) => {
+  const history = useHistory()
+  const urlToGo = useMemo(() => `/game/${slug}`, [slug])
+
+  const onCardClick = () => {
+    history.push(urlToGo)
+  }
   return (
-    <StyledGameCard>
+    <StyledGameCard onClick={onCardClick}>
       <ThumbnailWrapper>
         <Thumbnail src={thumbnail}/>
       </ThumbnailWrapper>
       <Content>
-        <StyledLink to={`/game/${slug}`}>
+        <StyledLink to={`/game/${urlToGo}`}>
           <Title>{title}</Title>
         </StyledLink>
         <Platforms>
-          {platforms.map(platform => (
+          {platforms && platforms.map(platform => (
             <Badge key={platform.id}>{platform.name}</Badge>
           ))}
         </Platforms>
@@ -27,6 +34,15 @@ const GameCard = ({title, thumbnail, rating, releaseDate, platforms, slug}) => {
       </Content>
     </StyledGameCard>
   )
+}
+
+GameCard.propTypes = {
+  title: PropTypes.string,
+  thumbnail: PropTypes.string,
+  rating: PropTypes.number,
+  releaseDate: PropTypes.string,
+  platforms: PropTypes.arrayOf(Platform),
+  slug: PropTypes.string,
 }
 
 const StyledGameCard = styled.div`
@@ -68,6 +84,10 @@ const Thumbnail = styled.div.attrs(props => ({
   top: 0;
   left: 0;
 `
+
+Thumbnail.propTypes = {
+  src: PropTypes.string
+}
 
 const Content = styled.div`
   padding: 8px 8px 4px 8px;

@@ -80,6 +80,7 @@ const gamesListSlice = createSlice({
 
 export const selectGames = (state) => state.gamesList.games
 export const selectStatus = (state) => state.gamesList.status
+export const selectSearch = (state) => state.gamesList.search
 export const selectSort = (state) => state.gamesList.sort
 export const selectPlatforms = (state) => state.gamesList.platforms
 

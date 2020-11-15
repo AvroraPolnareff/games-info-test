@@ -15,6 +15,11 @@ export const InfoElement = ({name, children}) => {
     </StyledInfoElement>
   )
 }
+
+InfoElement.propTypes = {
+  name: PropTypes.string
+}
+
 const StyledInfoElement = styled.li`
   display: flex;
   justify-content: space-between;

@@ -4,6 +4,9 @@ import {Switch ,HashRouter, Route} from 'react-router-dom'
 import Home from "../pages/Home";
 import Game from "../pages/Game";
 import Header from "../components/Header";
+import {useSelector} from "react-redux";
+import {selectShow} from "../store/imageViewerSlice";
+import {ImageViewer} from "../components/ImageViewer";
 
 const App = () => {
   return (
@@ -17,6 +20,7 @@ const App = () => {
             <Game/>
           </Route>
         </Switch>
+        <Modals/>
       </HashRouter>
   )
 }
@@ -24,5 +28,15 @@ const App = () => {
 const StyledApp = styled.div`
   
 `
+
+const Modals = () => {
+  const showImageViewer = useSelector(selectShow)
+
+  return (
+    <>
+      {showImageViewer && <ImageViewer/>}
+    </>
+  )
+}
 
 export default App
