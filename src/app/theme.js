@@ -11,7 +11,13 @@ const darkTheme = {
       back: '#202020',
       text: "#FFF",
     }
-  }
+  },
+  breakpoints: {
+    sm: '576px',
+    md: '768px',
+    lg: '992px',
+    xl: '1200px',
+  },
 }
 
 export default darkTheme

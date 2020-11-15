@@ -1,5 +1,4 @@
 import React from 'react'
-import {hot} from 'react-hot-loader'
 import styled from 'styled-components'
 import {Switch ,HashRouter, Route} from 'react-router-dom'
 import Home from "../pages/Home";
@@ -14,7 +13,9 @@ const App = () => {
           <Route path="/" exact>
             <Home/>
           </Route>
-          <Route path={"/game/:gameId"} component={<Game/>}/>
+          <Route path={"/game/:gameId"}>
+            <Game/>
+          </Route>
         </Switch>
       </HashRouter>
   )

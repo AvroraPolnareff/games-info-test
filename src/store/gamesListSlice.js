@@ -3,17 +3,24 @@ import {fetchGames} from "../api/rawg-api";
 
 export const fetchGamesList = createAsyncThunk(
   'games/fetchGamesList',
-  async (getState) => {
-    const {page, search, sort, platforms} = getState();
-    return await fetchGames(page, search, sort, platforms)
+  async ({search: searchArg, sort: sortArg, platforms: platformsArg}, {getState}) => {
+    const {currentPage, search, sort, platforms} = getState().gamesList;
+    console.log(currentPage, search, sort, platforms)
+    console.log(getState().gamesList)
+    return await fetchGames(
+      currentPage,
+      searchArg ?? search,
+      sortArg ?? sort,
+      platformsArg ?? platforms
+    )
   }
 )
 
 const initialState = {
-  currentPage: 0,
+  currentPage: 1,
   games: [],
   search: "",
-  sortBy: "",
+  sort: "",
   platforms: [],
   status: "idle",
   error: null
@@ -30,9 +37,9 @@ const gamesListSlice = createSlice({
      */
     changePlatforms(state, action) {
       state.platforms = action.payload
-      state.currentPage = 0
-      state.status = "idle"
-      state.games = []
+      state.currentPage = initialState.currentPage
+      state.status = initialState.status
+      state.games = initialState.games
     },
     /**
      * @param state
@@ -40,19 +47,19 @@ const gamesListSlice = createSlice({
      */
     changeSort(state, action) {
       state.sort = action.payload
-      state.currentPage = 0
-      state.status = "idle"
-      state.games = []
+      state.currentPage = initialState.currentPage
+      state.status = initialState.status
+      state.games = initialState.games
     },
     /**
      * @param state
      * @param {Object<{payload: string}>} action
      */
     changeSearch(state, action) {
-      state.sort = action.payload
-      state.currentPage = 0
-      state.status = "idle"
-      state.games = []
+      state.search = action.payload
+      state.currentPage = initialState.currentPage
+      state.status = initialState.status
+      state.games = initialState.games
     }
   },
   extraReducers: {
@@ -62,7 +69,7 @@ const gamesListSlice = createSlice({
     [fetchGamesList.fulfilled]: (state, action) => {
       state.status = 'succeeded'
       state.currentPage++
-      state.games.push(...action)
+      state.games.push(...action.payload)
     },
     [fetchGamesList.rejected]: (state, action) => {
       state.status = 'failed'
@@ -71,9 +78,10 @@ const gamesListSlice = createSlice({
   }
 })
 
-export const selectGames = (state) => state.games
-export const selectStatus = (state) => state.status
-export const selectSort = (state) => state.sort
+export const selectGames = (state) => state.gamesList.games
+export const selectStatus = (state) => state.gamesList.status
+export const selectSort = (state) => state.gamesList.sort
+export const selectPlatforms = (state) => state.gamesList.platforms
 
 export const {
   changePlatforms,

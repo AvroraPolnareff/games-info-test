@@ -1,12 +1,27 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import searchIcon from '../assets/search.svg'
+import {up} from 'styled-breakpoints'
+import {useDispatch} from "react-redux";
+import {changeSearch} from "../store/gamesListSlice";
+import {useQuery} from "../helpers/hooks";
 
 const Header = ({}) => {
+  const dispatch = useDispatch()
+  const query = useQuery()
+  const [value, setValue] = useState(query.get("search") ?? "")
+
   return (
     <StyledHeader>
       <Logo href="/">GAMES</Logo>
-      <Search/>
+      <form onSubmit={() => dispatch(changeSearch(value))}>
+        <Search
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={"Search for games"}
+        />
+      </form>
+      <div/>
     </StyledHeader>
   )
 }
@@ -14,6 +29,7 @@ const Header = ({}) => {
 const StyledHeader = styled.header`
   display: flex;
   align-items: center;
+  justify-content: space-around;
   height: 60px;
 `
 
@@ -28,10 +44,10 @@ const Logo = styled.a`
   text-decoration: none;
 `
 
-const Search = ({props}) => {
+const Search = (props) => {
   return (
     <StyledSearch>
-      <Input placeholder="Search for games" {...props}/>
+      <Input {...props}/>
     </StyledSearch>
   )
 }
@@ -55,6 +71,11 @@ const Input = styled.input`
   font-size: 14px;
   padding: 0 12px 0 38px ;
   transition: all .3s;
+  
+  ${up('md')} {
+    padding: 4px 20px 4px 45px ;
+    width: 600px;
+  }
   
   &:active, &:focus, &:hover {
     outline: none;

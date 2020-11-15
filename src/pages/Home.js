@@ -1,72 +1,88 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import GameCard from "../components/GameCard";
-import {fetchGames} from "../api/rawg-api";
-
-//TODO REMOVE
-const platforms = [
-  {name: "PC", id: 1},
-  {name: "PlayStation 4", id: 0},
-  {name: "PlayStation 3", id: 2},
-  {name: "Xbox One", id: 3},
-  {name: "Xbox 360", id: 4},
-]
+import {useDispatch, useSelector} from "react-redux";
+import {
+  changePlatforms,
+  changeSort,
+  fetchGamesList,
+  selectGames, selectPlatforms,
+  selectSort,
+  selectStatus
+} from "../store/gamesListSlice";
+import InfiniteScroll from "react-infinite-scroll-component";
+import {useQuery} from "../helpers/hooks";
 
 const Home = ({}) => {
-  const [games, setGames] = useState([])
-  useEffect(() => {
-    fetchAllGames()
-  })
+  const games = useSelector(selectGames)
+  const status = useSelector(selectStatus)
+  const sort = useSelector(selectSort)
+  const platforms = useSelector(selectPlatforms)
 
-  const fetchAllGames = async () => {
-    const games = await fetchGames()
-    setGames(games)
+  const query = useQuery()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchGamesList({
+        search: query.get('search'),
+        platforms: query.get('platforms'),
+        sort: query.get('sort'),
+      }))
+    }
+  }, [status, dispatch])
+
+  const onLoadMore = () => {
+    dispatch(fetchGamesList({}))
+  }
+
+  const handleSort = (e) => {
+    console.log(e.target.value)
+    dispatch(changeSort(e.target.value))
+    console.log(sort)
+  }
+
+  const handlePlatforms = (e) => {
+    const value = e.target.value ? [e.target.value] : []
+    dispatch(changePlatforms(value))
   }
 
   return (
     <StyledHome>
       <SortWrapper>
         <span>Sort By: </span>
-        <Select name="sort">
+        <Select name="sort" value={sort} onChange={handleSort}>
+          <option value="">None</option>
           <option value={"rating"}>Rating asc.</option>
           <option value={"-rating"}>Rating desc.</option>
           <option value={"released"}>Release Date asc.</option>
           <option value={"-released"}>Release Date desc.</option>
-        </Select >
-        <Select name="platform"/>
+        </Select>
+        <Select name="platforms" value={platforms} onChange={handlePlatforms}>
+          <option value="">All</option>
+          <option value="187">PlayStation 5</option>
+          <option value="18">PlayStation 4</option>
+          <option value="4">Xbox One</option>
+        </Select>
       </SortWrapper>
-      <GamesList>
-        {games.length  && games.map(game => (
-          <GameCard
-            title={game.title}
-            platforms={game.platforms}
-            rating={game.rating}
-            releaseDate={game.releaseDate}
-            thumbnail={game.thumbnail}
-          />
+      <GamesList
+        dataLength={games.length}
+        next={onLoadMore}
+        hasMore={true}
+        useWindow={true}
+        loader={<h4>Loading</h4>}
+      >
+        {games.length && games.map(game => (
+            <GameCard
+              key={game.id}
+              title={game.title}
+              platforms={game.platforms}
+              rating={game.rating}
+              releaseDate={game.releaseDate}
+              thumbnail={game.thumbnail}
+              slug={game.slug}
+            />
         ))}
-        <GameCard
-          name={"Chiken Police - Paint it RED!"}
-          platforms={platforms}
-          rating={96}
-          releaseDate={"09.09.2020"}
-          thumbnail={"https://media.rawg.io/media/crop/600/400/screenshots/17a/17a94bcc1b994fa4e24729371d6988b6.jpg"}
-        />
-        <GameCard
-          name={"Chiken Police - Paint it RED!"}
-          platforms={platforms}
-          rating={96}
-          releaseDate={"09.09.2020"}
-          thumbnail={"https://media.rawg.io/media/crop/600/400/screenshots/17a/17a94bcc1b994fa4e24729371d6988b6.jpg"}
-        />
-        <GameCard
-          name={"Chiken Police - Paint it RED!"}
-          platforms={platforms}
-          rating={96}
-          releaseDate={"09.09.2020"}
-          thumbnail={"https://media.rawg.io/media/crop/600/400/screenshots/17a/17a94bcc1b994fa4e24729371d6988b6.jpg"}
-        />
-
       </GamesList>
     </StyledHome>
   )
@@ -75,7 +91,7 @@ const Home = ({}) => {
 const StyledHome = styled.div`
   
 `
-const GamesList = styled.div`
+const GamesList = styled(InfiniteScroll)`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;

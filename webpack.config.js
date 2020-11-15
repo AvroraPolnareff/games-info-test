@@ -51,6 +51,7 @@ module.exports = {
     publicPath: "http://localhost:3000/dist/",
     hotOnly: true
   },
+  devtool: "source-map",
   plugins: [
     isDevelopment && new webpack.HotModuleReplacementPlugin(),
     isDevelopment && new ReactRefreshWebpackPlugin(),

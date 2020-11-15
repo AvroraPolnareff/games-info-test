@@ -1,23 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
+import {up} from 'styled-breakpoints'
+import {Link} from "react-router-dom";
+import {InfoElement, InfoList} from "./InfoList";
+import {Badge} from "./Badge";
 
-const GameCard = ({title, thumbnail, rating, releaseDate, platforms}) => {
+const GameCard = ({title, thumbnail, rating, releaseDate, platforms, slug}) => {
   return (
     <StyledGameCard>
       <ThumbnailWrapper>
         <Thumbnail src={thumbnail}/>
       </ThumbnailWrapper>
       <Content>
-        <FlexBetween>
-          <Platforms>
-            {platforms.map(platform => (
-              <Badge key={platform.id}>{platform.name}</Badge>
-            ))}
-          </Platforms>
-          <Rating>{rating}</Rating>
-        </FlexBetween>
-        <Title>{title}</Title>
-        <Release>Release Date: {releaseDate}</Release>
+        <StyledLink to={`/game/${slug}`}>
+          <Title>{title}</Title>
+        </StyledLink>
+        <Platforms>
+          {platforms.map(platform => (
+            <Badge key={platform.id}>{platform.name}</Badge>
+          ))}
+        </Platforms>
+        <InfoList>
+          <InfoElement name={"Release Date: "}>{releaseDate ?? "N/A"}</InfoElement>
+          <InfoElement name={"Rating: "}>{rating}</InfoElement>
+        </InfoList>
       </Content>
     </StyledGameCard>
   )
@@ -29,6 +35,16 @@ const StyledGameCard = styled.div`
   margin: 8px 8px;
   box-sizing: border-box;
   width: 100%;
+  transition: all 0.2s ;
+  transform: scale(1);
+  
+  ${up('md')} {
+    max-width: 320px;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
 `
 
 const ThumbnailWrapper = styled.div`
@@ -57,44 +73,18 @@ const Content = styled.div`
   padding: 8px 8px 4px 8px;
 `
 
-const FlexBetween = styled.div`
-  display: flex;
-  justify-content: space-between;
+const Title = styled.h2`
+  margin: 4px 0;
 `
 
 const Platforms = styled.div`
   display: flex;
   flex-wrap: wrap;
-  
-`
-const Badge = styled.div`
-  
-  background-color: ${({theme}) => theme.colors.input.back};
-  padding: 2px 3px;
-  text-align: center;
-  border-radius: 4px;
-  font-weight: 400;
-  margin: 2px 2px;
-`
-const Title = styled.h2`
-  margin: 4px 0;
 `
 
-const Rating = styled.div`
-  align-self: center;
-  
-  border: 1px solid rgba(109,200,73,.4);
-  color: #6dc849;
-  padding: 2px 0;
-  max-width: 32px;
-  text-align: center;
-  border-radius: 4px;
-  font-weight: 700;
-  flex-basis: 100px;
-  
-`
-const Release = styled.div`
-  text-align: right;
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: ${({theme}) => theme.colors.text}
 `
 
 export default GameCard
