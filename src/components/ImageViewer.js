@@ -12,6 +12,7 @@ import {
   selectImages, next, previous
 } from "../store/imageViewerSlice";
 import {up} from "styled-breakpoints";
+import PropTypes from "prop-types"
 
 export const ImageViewer = () => {
   const dispatch = useDispatch()
@@ -192,5 +193,5 @@ export const Preview = styled.div.attrs(({src}) => ({
 
 Preview.propTypes = {
   src: PropTypes.string,
-  active: PropsTypes.boolean
+  active: PropTypes.boolean
 }

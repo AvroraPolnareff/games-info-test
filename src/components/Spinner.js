@@ -1,4 +1,5 @@
 import styled, {keyframes} from 'styled-components'
+import PropTypes from "prop-types"
 
 const loadingspin = keyframes`
   100% {

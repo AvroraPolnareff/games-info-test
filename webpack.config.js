@@ -5,10 +5,16 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 
 const env = dotenv.config().parsed
 
-const envKeys = Object.keys(env).reduce((prev, next) => {
-  prev[`process.env.${next}`] = JSON.stringify(env[next]);
-  return prev;
-}, {});
+let envKeys
+
+if (env) {
+  envKeys = Object.keys(env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(env[next]);
+    return prev;
+  }, {});
+} else {
+  envKeys = {process: {env: {}}}
+}
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -55,6 +61,6 @@ module.exports = {
   plugins: [
     isDevelopment && new webpack.HotModuleReplacementPlugin(),
     isDevelopment && new ReactRefreshWebpackPlugin(),
-    new webpack.DefinePlugin(envKeys)
+    envKeys && new webpack.DefinePlugin(envKeys)
   ].filter(Boolean)
 };

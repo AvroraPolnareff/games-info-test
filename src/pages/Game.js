@@ -8,6 +8,7 @@ import {up} from "styled-breakpoints";
 import {Spinner} from "../components/Spinner";
 import {useDispatch} from "react-redux";
 import {show} from "../store/imageViewerSlice";
+import PropTypes from "prop-types"
 
 const Game = ({}) => {
   const {gameId} = useParams()

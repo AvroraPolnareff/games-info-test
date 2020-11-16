@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {InfoElement, InfoList} from "./InfoList";
 import {Badge} from "./Badge";
 import {useHistory} from "react-router-dom"
+import PropTypes from "prop-types"
 
 const GameCard = ({title, thumbnail, rating, releaseDate, platforms, slug}) => {
   const history = useHistory()
@@ -41,7 +42,7 @@ GameCard.propTypes = {
   thumbnail: PropTypes.string,
   rating: PropTypes.number,
   releaseDate: PropTypes.string,
-  platforms: PropTypes.arrayOf(Platform),
+  platforms: PropTypes.arrayOf(),
   slug: PropTypes.string,
 }
 
