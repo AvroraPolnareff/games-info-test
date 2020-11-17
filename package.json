@@ -2,12 +2,15 @@
   "name": "games-info",
   "version": "1.0.0",
   "main": "src/index.js",
+  "homepage": "https://avrorapolnareff.github.io/games-info-test",
   "license": "MIT",
   "private": true,
   "scripts": {
     "start": "webpack --mode development serve",
     "build": "cross-env NODE_ENV=production webpack --mode production",
-    "electron": "yarn build && electron ./electron/index.js"
+    "electron": "yarn build && electron ./electron/index.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
@@ -40,6 +43,7 @@
     "dotenv": "^8.2.0",
     "electron": "^10.1.5",
     "electron-builder": "^22.9.1",
+    "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^4.5.0",
     "prettier": "^2.1.2",
     "react-hot-loader": "^4.13.0",

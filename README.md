@@ -2,6 +2,10 @@
 
 Минималистичная библиотека игр.
 
+## Демо
+
+https://avrorapolnareff.github.io/games-info-test
+
 ## Запуск 
 ```
 yarn && yarn start
