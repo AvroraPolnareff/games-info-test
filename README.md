@@ -11,6 +11,11 @@ https://avrorapolnareff.github.io/games-info-test
 yarn && yarn start
 ```
 
+## Electron
+```
+yarn && yarn electron
+```
+
 ## Задание
 
 Требуется реализовать web-приложение - “витрину” игр наподобие https://rawg.io/ или https://gamegid.online/ на базе API https://rawg.io/apidocs.
