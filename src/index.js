@@ -1,10 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 import App from "./app/App";
-import {createGlobalStyle, ThemeProvider} from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import darkTheme from "./app/theme";
-import {Provider} from "react-redux";
-import {store} from "./store/store";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -15,20 +15,21 @@ const GlobalStyle = createGlobalStyle`
     Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
     letter-spacing: 0;
     text-rendering: optimizeLegibility;
-    color: ${({theme}) => theme.colors.text};
-    background-color: ${({theme}) => theme.colors.back};
-}
+    color: ${({ theme }) => theme.colors.text};
+    background-color: ${({ theme }) => theme.colors.back};
+    margin: 0;
+  }
 
-`
+`;
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={darkTheme}>
-        <GlobalStyle/>
-        <App/>
+        <GlobalStyle />
+        <App />
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
-  window.document.getElementById('root')
-)
+  window.document.getElementById("root"),
+);

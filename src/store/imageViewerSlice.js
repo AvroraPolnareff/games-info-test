@@ -1,13 +1,13 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 /**
  *
  * @typedef {Object} ImageViewerState
- *  @property images: Screenshot[],
- *  @property currentImage: number | null,
- *  @property show: boolean,
- *  @property canNext: boolean
- *  @property canPrevious: boolean
+ *  @property {Screenshot[]} images
+ *  @property {Screenshot} currentImage
+ *  @property {boolean} show:
+ *  @property {boolean} canNext
+ *  @property {boolean} canPrevious
  */
 
 /**
@@ -18,8 +18,8 @@ const initialState = {
   currentImage: null,
   canNext: false,
   canPrevious: false,
-  images: []
-}
+  images: [],
+};
 
 const imageViewerSlice = createSlice({
   name: "imageViewer",
@@ -30,59 +30,65 @@ const imageViewerSlice = createSlice({
      * @param {Object<{images: Screenshot[], id: number}>} action.payload
      */
     show(state, action) {
-      const {images, id} = action.payload;
-      const currentImageIndex = images.findIndex(image => image.id === id);
+      const { images, id } = action.payload;
+      const currentImageIndex = images.findIndex((image) => image.id === id);
       state.images = images;
-      state.currentImage = images[currentImageIndex]
+      state.currentImage = images[currentImageIndex];
 
-      state.canPrevious = Boolean(images[currentImageIndex - 1])
-      state.canNext = Boolean(images[currentImageIndex + 1])
-      state.show = true
+      state.canPrevious = Boolean(images[currentImageIndex - 1]);
+      state.canNext = Boolean(images[currentImageIndex + 1]);
+      state.show = true;
     },
+
     next(state) {
-      if (!state.canNext) return
-      const currentImageIndex = state.images.findIndex(image => image.id === state.currentImage.id);
-      state.currentImage = state.images[currentImageIndex + 1]
+      if (!state.canNext) return;
+      const currentImageIndex = state.images.findIndex(
+        (image) => image.id === state.currentImage.id,
+      );
+      state.currentImage = state.images[currentImageIndex + 1];
 
-      state.canPrevious = true
-      state.canNext = Boolean(state.images[currentImageIndex + 2])
+      state.canPrevious = true;
+      state.canNext = Boolean(state.images[currentImageIndex + 2]);
     },
+
     previous(state) {
-      if (!state.canPrevious) return
-      const currentImageIndex = state.images.findIndex(image => image.id === state.currentImage.id);
-      state.currentImage = state.images[currentImageIndex - 1]
+      if (!state.canPrevious) return;
+      const currentImageIndex = state.images.findIndex(
+        (image) => image.id === state.currentImage.id,
+      );
+      state.currentImage = state.images[currentImageIndex - 1];
 
-      state.canPrevious = Boolean(state.images[currentImageIndex - 2])
-      state.canNext = true
+      state.canPrevious = Boolean(state.images[currentImageIndex - 2]);
+      state.canNext = true;
     },
+
     /**
-     * @param state
+     * @param {ImageViewerState} state
      * @param {number} action.payload - id of the image
      */
     jumpTo(state, action) {
-      state.currentImage = state.images.find(image => image.id === action.payload)
-      const currentImageIndex = state.images.findIndex(image => image.id === action.payload);
+      state.currentImage = state.images.find(
+        (image) => image.id === action.payload,
+      );
+      const currentImageIndex = state.images.findIndex(
+        (image) => image.id === action.payload,
+      );
 
-      state.canPrevious = Boolean(state.images[currentImageIndex - 1])
-      state.canNext = Boolean(state.images[currentImageIndex + 1])
+      state.canPrevious = Boolean(state.images[currentImageIndex - 1]);
+      state.canNext = Boolean(state.images[currentImageIndex + 1]);
     },
+
     hide(state) {
-      state.show = false
-    }
-  }
-})
+      state.show = false;
+    },
+  },
+});
 
-export const {
-  hide,
-  show,
-  previous,
-  next,
-  jumpTo
-} = imageViewerSlice.actions
-export default imageViewerSlice.reducer
+export const { hide, show, previous, next, jumpTo } = imageViewerSlice.actions;
+export default imageViewerSlice.reducer;
 
-export const selectShow = (state) => state.imageViewer.show
-export const selectCurrentImage = (state) => state.imageViewer.currentImage
-export const selectCanNext = (state) => state.imageViewer.canNext
-export const selectCanPrevious = (state) => state.imageViewer.canPrevious
-export const selectImages = (state) => state.imageViewer.images
+export const selectShow = (state) => state.imageViewer.show;
+export const selectCurrentImage = (state) => state.imageViewer.currentImage;
+export const selectCanNext = (state) => state.imageViewer.canNext;
+export const selectCanPrevious = (state) => state.imageViewer.canPrevious;
+export const selectImages = (state) => state.imageViewer.images;

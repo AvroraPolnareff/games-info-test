@@ -1,4 +1,11 @@
 /**
+ * Search Results
+ * @typedef {Object<T>} SearchResults
+ * @property {boolean} hasMore
+ * @property {T} results
+ */
+
+/**
  * Game Type Definition
  * @typedef {Object} Game
  * @property {number} id
@@ -7,7 +14,7 @@
  * @property {string} thumbnail
  * @property {number} rating
  * @property {string} releaseDate
- * @property {Array<Platform>} platforms
+ * @property {Platform[]} platforms
  */
 
 /**
@@ -40,4 +47,3 @@
  * @property {string} full - fullsize image
  * @property {string} mini - resized image
  */
-

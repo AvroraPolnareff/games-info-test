@@ -1,42 +1,48 @@
-import React from 'react'
-import styled from 'styled-components'
-import {Switch ,HashRouter, Route} from 'react-router-dom'
-import Home from "../pages/Home";
-import Game from "../pages/Game";
+import React from "react";
+import styled from "styled-components";
+import { Switch, HashRouter, Route } from "react-router-dom";
+import Home from "../components/pages/Home";
+import Game from "../components/pages/Game";
 import Header from "../components/Header";
-import {useSelector} from "react-redux";
-import {selectShow} from "../store/imageViewerSlice";
-import {ImageViewer} from "../components/ImageViewer";
+import { useSelector } from "react-redux";
+import { selectShow as selectViewerShow } from "../store/imageViewerSlice";
+import { ImageViewer } from "../components/modals/ImageViewer";
+import { selectModal } from "../store/modalSlice";
+import { PlatformsModal } from "../components/modals/PlatformsModal";
 
 const App = () => {
   return (
+    <StyledApp>
       <HashRouter>
-        <Header/>
+        <Header />
         <Switch>
           <Route path="/" exact>
-            <Home/>
+            <Home />
           </Route>
           <Route path={"/game/:gameId"}>
-            <Game/>
+            <Game />
           </Route>
         </Switch>
-        <Modals/>
+        <Modals />
       </HashRouter>
-  )
-}
+    </StyledApp>
+  );
+};
 
 const StyledApp = styled.div`
-  
-`
+  padding-bottom: 200px;
+`;
 
 const Modals = () => {
-  const showImageViewer = useSelector(selectShow)
+  const showImageViewer = useSelector(selectViewerShow);
+  const modal = useSelector(selectModal);
 
   return (
     <>
-      {showImageViewer && <ImageViewer/>}
+      {showImageViewer && <ImageViewer />}
+      {modal === "platforms" && <PlatformsModal />}
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
